@@ -1,32 +1,50 @@
 import newspaper
 from newspaper import Article
-import unicodecsv as csv
+import pymongo
+from pymongo import MongoClient
+
+connection = MongoClient()
+db = connection['articles']
+collection = db['article_data']
 
 sources = [
-	'http://www.reuters.com/',
-	'http://hosted.ap.org/',
-	'http://www.npr.org/',
-	'http://america.aljazeera.com/',
+	"http://www.cnn.com/",
+	"http://www.nytimes.com/",
+	"http://www.huffingtonpost.com/",
+	"https://www.theguardian.com/",
+	"https://www.news.yahoo.com/",
+	"http://www.foxnews.com/",
+	"http://www.forbes.com/",
+	"http://www.bbc.com/news",
 ]
 
-file = open('articles.csv', 'a')
-writer = csv.writer(file, delimiter = ',')
-
 for source in sources: 
-	paper = newspaper.build(source)
+	paper = newspaper.build(source, memoize_articles=False)
 	for article in paper.articles:
 		article.download()
 		article.parse()
-		article.nlp()
-		url = article.url
-		authors = article.authors
-		date = article.publish_date
-		keywords = article.keywords
-		text = article.text
-		title = article.title
-		print title
-		writer.writerow((str(date), url, title, authors, keywords, text))
-		file.flush()
+		try:
+			article.nlp()
+			url = article.url
+			authors = article.authors
+			date = article.publish_date
+			keywords = article.keywords
+			text = article.text
+			title = article.title
+			if len(keywords) > 0:
+				print title
+				doc = {
+						'date': date,
+						'title': title,
+						'keywords': keywords,
+						'authors': authors, 
+						'text': text,
+						'url': url,
+					}
+				db.collection.update_one({'title': title, 'authors': authors},
+					{'$set': doc}, upsert=True)
+		except: 
+			pass
 
-file.close()
+
 
