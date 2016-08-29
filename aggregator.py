@@ -32,7 +32,6 @@ for source in sources:
 			text = article.text
 			title = article.title
 			if len(keywords) > 0:
-				print title
 				doc = {
 						'date': date,
 						'title': title,
@@ -41,10 +40,11 @@ for source in sources:
 						'text': text,
 						'url': url,
 					}
-				db.collection.update_one({'title': title, 'authors': authors},
+				collection.update_one({'title': title, 'authors': authors},
 					{'$set': doc}, upsert=True)
-		except: 
-			pass
+				print title
+		except Exception, e: 
+			print str(e)
 
 
 

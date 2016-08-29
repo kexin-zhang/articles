@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>INSERT TITLE</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='metrics-graphics-2.10.1/dist/metricsgraphics.css') }}">
+	</head>
+	<body>
+		<div class="row">
+			<div class="large-12 medium-12 small-12 columns">
+				<form action="{{ url_for('search') }}" method="post">
+					<input id="query" placeholder="search for a topic.." name="query" type="text" />
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="large-12 medium-12 small-12 columns">
+				{% block content %}
+				{% endblock %}
+			</div>
+		</div>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.3/foundation.min.js"></script>
+</html>

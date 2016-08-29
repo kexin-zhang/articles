@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+	<div id = "chart"></div>
+	<div id= "bubble-chart"></div>
+
+	<script  src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="{{ url_for('static', filename='metrics-graphics-2.10.1/dist/metricsgraphics.min.js') }}"></script>
+	<script>
+		var article_data = {{ lengths | safe }};
+		var data = [];
+		for (var prop in article_data) {
+			data.push({'date': new Date(prop), 'value': article_data[prop] });
+		}
+
+		MG.data_graphic({
+		    title: "Articles Published",
+		    data: data,
+		    width: 960,
+		    height: 650,
+		    target: '#chart',
+		    x_accessor: 'date',
+		    y_accessor: 'value',
+		})
+
+		var keywords = {{ keywords | safe }};
+		var keyword_data = [];
+		for (var prop in keywords) {
+			keyword_data.push({'name': prop, 'size': keywords[prop]});
+		}
+
+		keyword_data.sort(function(a, b) { 
+		    return b.speed - a.speed;
+		})
+
+		keyword_data = keyword_data.slice(0, 29);
+
+
+		console.log(keyword_data)
+
+		var diameter = 960;
+		var color = d3.scale.category20c();
+
+	    var svg = d3.select('#bubble-chart').append('svg')
+	                    .attr('width', diameter)
+	                    .attr('height', diameter);
+
+	    var bubble = d3.layout.pack()
+	                .size([diameter, diameter])
+	                .value(function(d) {return d.size;})
+	         // .sort(function(a, b) {
+	                //  return -(a.value - b.value)
+	                // }) 
+	                .padding(3);
+	  
+		  // generate data with calculated layout values
+		  var nodes = bubble.nodes({children: keyword_data})
+		                        .filter(function(d) { return !d.children; }); // filter out the outer bubble
+		 
+		  var vis = svg.append("g")
+		  				.selectAll('circle')
+		                .data(nodes);
+		  
+		  vis.enter().append('circle')
+		  			.style("fill", function(d) { return color(d.name); })
+		            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+		            .attr('r', function(d) { return d.r; })
+	            .append("text")
+		      .attr("dy", ".3em")
+		      .style("text-anchor", "middle")
+
+
+		 vis.enter().append('text')
+		 	.attr("x", function(d){ return d.x; })
+	        .attr("y", function(d){ return d.y + 5; })
+	        .attr("text-anchor", "middle")
+		 	.text(function(d) { return d.name })
+		 	.style({
+	            "color":"white", 
+	            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+	            "font-size": "12px"
+	        });
+
+	</script>
+
+{% endblock %}
+
