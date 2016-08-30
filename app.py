@@ -29,7 +29,9 @@ def results(query):
 		{'$sort': {'_id': 1}}
 	]
 
+
 	articles = collection.aggregate(pipeline)
+
 	articles_length = {}
 	all_articles = {}
 
@@ -51,9 +53,13 @@ def results(query):
 	]
 
 	words = collection.aggregate(pipeline2)
-	all_keywords = [item['word'] for item in list(words)[0]['words']]
+	try:
+		all_keywords = [item['word'] for item in list(words)[0]['words']]
+	except:
+		all_keywords = []
 
-	words_dict = {str(x):all_keywords.count(x) for x in all_keywords if all_keywords.count(x) > 2 and query not in str(x) }
+	ignore = ['10000', 'hello']
+	words_dict = {str(x):all_keywords.count(x) for x in all_keywords if query not in str(x) and len(str(x)) > 3 and str(x) not in ignore }
 
 	return render_template('search.html', articles=all_articles, keywords=words_dict, lengths = articles_length)
 

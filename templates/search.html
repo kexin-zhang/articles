@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-	<div id = "chart"></div>
-	<div id= "bubble-chart"></div>
+	{% if lengths|length > 0 or keywords|length > 0 %}
+		<div id = "chart"></div>
+		<div id= "bubble-chart"></div>
+	{% else %}
+		<div>
+			<h3>Sorry...</h3>
+			<p>We couldn't find anything matching your query. Try a different search, such as 'America', 'Trump', or 'Hillary'.</p>
+		</div>
+	{% endif %}
 
 	<script  src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
 	<script src="https://d3js.org/d3.v3.min.js"></script>
@@ -31,13 +38,10 @@
 		}
 
 		keyword_data.sort(function(a, b) { 
-		    return b.speed - a.speed;
+		    return b.size - a.size;
 		})
 
 		keyword_data = keyword_data.slice(0, 29);
-
-
-		console.log(keyword_data)
 
 		var diameter = 960;
 		var color = d3.scale.category20c();
