@@ -1,10 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 	{% if lengths|length > 0 or keywords|length > 0 %}
-		<div id = "chart"></div>
-		<div id= "bubble-chart"></div>
+		<div class="col s12 center-align">
+			<h3 id="title">"{{query}}"</h3>
+		</div>
+		<div class="col s8 center-align" style="margin-left: -5rem;">
+			<h5>Articles Published</h5>
+			<div id = "chart"></div>
+			<h5>Keywords Used in Articles</h5>
+			<div id= "bubble-chart"></div>
+		</div>
+		<div class="col s4">
+			<h5 id="article-header">Articles</h5>
+			<div id="display-arts"></div>
+		</div>
 	{% else %}
-		<div>
+		<div class="col s12">
 			<h3>Sorry...</h3>
 			<p>We couldn't find anything matching your query. Try a different search, such as 'America', 'Trump', or 'Hillary'.</p>
 		</div>
@@ -15,20 +26,37 @@
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="{{ url_for('static', filename='metrics-graphics-2.10.1/dist/metricsgraphics.min.js') }}"></script>
 	<script>
+		var all_articles = {{articles | safe}};
 		var article_data = {{ lengths | safe }};
 		var data = [];
-		for (var prop in article_data) {
-			data.push({'date': new Date(prop), 'value': article_data[prop] });
+		for (var prop in all_articles) {
+			var d = new Date(prop);
+			d.setTime( d.getTime() + d.getTimezoneOffset()*60*1000 );
+			console.log(prop);	
+			console.log(d);
+			data.push({'date': d, 'value': all_articles[prop] != null ? all_articles[prop].length : 0 });
 		}
 
+		console.log(data);
+
 		MG.data_graphic({
-		    title: "Articles Published",
 		    data: data,
-		    width: 960,
-		    height: 650,
+		    width: 900,
+		    height: 600,
 		    target: '#chart',
 		    x_accessor: 'date',
 		    y_accessor: 'value',
+		    color: '#82b1ff',
+		    mouseover: function(d, i) {
+            // custom format the rollover text, show days
+            d3.select('#custom-rollover svg .mg-active-datapoint')
+                .text(d.date + ': ' + d.value);
+
+            var dateToShow = format(d.date, 'yyyy-MM-dd');
+            console.log(dateToShow);
+            //console.log(all_articles[dateToShow]);
+            displayArticles(all_articles[dateToShow], String(d.date).substring(4, 15));
+        }
 		})
 
 		var keywords = {{ keywords | safe }};
@@ -43,7 +71,7 @@
 
 		keyword_data = keyword_data.slice(0, 29);
 
-		var diameter = 960;
+		var diameter = 900;
 		var color = d3.scale.category20c();
 
 	    var svg = d3.select('#bubble-chart').append('svg')
@@ -85,6 +113,45 @@
 	            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
 	            "font-size": "12px"
 	        });
+
+	    function displayArticles(arts, date) {
+	    	var htmlStr = '';
+	    	if (arts != null) {
+	    		$('#article-header').html('<h5>Articles published on <span style="color:#42a5f5;">' + date + '</span></h5>');
+		    	for (var i=0; i < arts.length; i ++) {
+		    		var thisArt = arts[i];
+		    		htmlStr += '<div class="section">';
+		    		htmlStr += '<h6><a target="_blank" href="' + thisArt.url + '">' + thisArt.title + '</a></h6>';
+		    		if (thisArt.keywords != null) {
+		    			htmlStr += '<span>Keywords</span>: ';
+			    		for (var j=0; j < thisArt.keywords.length; j++) {
+			    			htmlStr += '<div class="chip"><a href="/results/' + thisArt.keywords[j] + '">' + thisArt.keywords[j] + '</a></div>';
+			    		}
+		    		}
+		    		htmlStr += '</div>';
+		    		htmlStr += '<div class="divider"></div>';
+		    	}
+		    	$('#display-arts').html('');
+		    	$('#display-arts').html(htmlStr);
+	    	}
+	    }
+
+		format = function date2str(x, y) {
+		    var z = {
+		        M: x.getMonth() + 1,
+		        d: x.getDate(),
+		        h: x.getHours(),
+		        m: x.getMinutes(),
+		        s: x.getSeconds()
+		    };
+		    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+		        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+		    });
+
+		    return y.replace(/(y+)/g, function(v) {
+		        return x.getFullYear().toString().slice(-v.length)
+		    });
+		} 
 
 	</script>
 
