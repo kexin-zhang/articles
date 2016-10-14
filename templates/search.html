@@ -2,7 +2,7 @@
 {% block content %}
 	{% if lengths|length > 0 or keywords|length > 0 %}
 		<div class="col s12 center-align">
-			<h3 id="title">"{{query}}"</h3>
+			<h3 class="header" id="title">"{{query}}"</h3>
 		</div>
 		<div class="col s8 center-align" style="margin-left: -5rem;">
 			<h5>Articles Published</h5>
@@ -12,7 +12,9 @@
 		</div>
 		<div class="col s4">
 			<h5 id="article-header">Articles</h5>
-			<div id="display-arts"></div>
+			<div id="display-arts">
+				<p>Hover over the graphs to find articles on "{{query}}."</p>
+			</div>
 		</div>
 	{% else %}
 		<div class="col s12">
@@ -32,12 +34,8 @@
 		for (var prop in all_articles) {
 			var d = new Date(prop);
 			d.setTime( d.getTime() + d.getTimezoneOffset()*60*1000 );
-			console.log(prop);	
-			console.log(d);
 			data.push({'date': d, 'value': all_articles[prop] != null ? all_articles[prop].length : 0 });
 		}
-
-		console.log(data);
 
 		MG.data_graphic({
 		    data: data,
@@ -53,7 +51,7 @@
                 .text(d.date + ': ' + d.value);
 
             var dateToShow = format(d.date, 'yyyy-MM-dd');
-            console.log(dateToShow);
+            //console.log(dateToShow);
             //console.log(all_articles[dateToShow]);
             displayArticles(all_articles[dateToShow], String(d.date).substring(4, 15));
         }
@@ -72,7 +70,7 @@
 		keyword_data = keyword_data.slice(0, 29);
 
 		var diameter = 900;
-		var color = d3.scale.category20c();
+		var color = ["#81c784", "#7986cb", "#b39ddb", "#29b6f6", "#26c6da", "#26a69a", "#78909c"];
 
 	    var svg = d3.select('#bubble-chart').append('svg')
 	                    .attr('width', diameter)
@@ -95,14 +93,17 @@
 		                .data(nodes);
 		  
 		  vis.enter().append('circle')
-		  			.style("fill", function(d) { return color(d.name); })
+		  			.style("fill", function(d, i) { return color[i % color.length]; })
 		            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
 		            .attr('r', function(d) { return d.r; })
+		            .on("mouseover", keywordMouseover)
+		            .on("mouseleave", function(d) {d3.select(this).style("opacity", 1); })
 	            .append("text")
 		      .attr("dy", ".3em")
-		      .style("text-anchor", "middle")
+		      .style("text-anchor", "middle");
 
 
+		 
 		 vis.enter().append('text')
 		 	.attr("x", function(d){ return d.x; })
 	        .attr("y", function(d){ return d.y + 5; })
@@ -114,6 +115,26 @@
 	            "font-size": "12px"
 	        });
 
+	 	function keywordMouseover(d, i) {
+	 		d3.select(this).style("opacity", 0.5);
+	 		var word = d.name;
+	 		var keywordArticles = [];
+	 		for (prop in all_articles) {
+	 			var articlesfordate = all_articles[prop];
+	 			if (articlesfordate != null) {
+		 			for (var i=0; i<articlesfordate.length; i ++) {
+		 				var currArticle = articlesfordate[i]
+			 			if (currArticle.keywords.indexOf(word) > -1) {
+			 				keywordArticles.push(currArticle);
+			 			}
+		 			}
+	 			}
+	 		}
+	 		//console.log(keywordArticles);
+	 		var title = '"{{query}}" + ' + '"' + word + '"';
+	 		displayArticles(keywordArticles, title);
+	 	} 
+
 	    function displayArticles(arts, date) {
 	    	var htmlStr = '';
 	    	if (arts != null) {
@@ -121,7 +142,7 @@
 		    	for (var i=0; i < arts.length; i ++) {
 		    		var thisArt = arts[i];
 		    		htmlStr += '<div class="section">';
-		    		htmlStr += '<h6><a target="_blank" href="' + thisArt.url + '">' + thisArt.title + '</a></h6>';
+		    		htmlStr += '<h6><a class="article-link" target="_blank" href="' + thisArt.url + '">' + thisArt.title + '</a></h6>';
 		    		if (thisArt.keywords != null) {
 		    			htmlStr += '<span>Keywords</span>: ';
 			    		for (var j=0; j < thisArt.keywords.length; j++) {

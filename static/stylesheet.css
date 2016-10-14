@@ -1,5 +1,9 @@
-#article-header {
+#article-header, #display-arts p {
 	text-align: center;
+}
+
+#display-arts p {
+	color: #78909c;
 }
 
 #title {
@@ -9,4 +13,13 @@
 .chip a {
 	color: black;
 	font-weight: normal;
+}
+
+a.article-link:hover {
+	color: #2196f3;
+	text-decoration: underline;
+}
+
+.chip a:hover {
+	font-weight: bold;
 }

@@ -60,7 +60,7 @@ def results(query):
 			articles_length[curr] = 0
 
 	pipeline2 = [
-		{'$match': {'$or': [{'keywords': query}, {'title': {'$regex': query,  "$options": "-i"}}]}},
+		{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 8, 26)}}},
 		{'$unwind': '$keywords'},
 		{'$group': {'_id': None, 'words': {'$push': {'word': '$keywords'}}}}
 	]
