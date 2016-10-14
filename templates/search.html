@@ -96,27 +96,31 @@
 		  			.style("fill", function(d, i) { return color[i % color.length]; })
 		            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
 		            .attr('r', function(d) { return d.r; })
-		            .on("mouseover", keywordMouseover)
-		            .on("mouseleave", function(d) {d3.select(this).style("opacity", 1); })
+		            .on("mouseenter", keywordMouseover)
+		            .on("mouseleave", function(d) {
+		            		d3.select(this).style("opacity", 1); 
+		            		d3.select(this).attr("r", d.r-5); 
+		            	})
+		           	.on("click", function(d) {
+		           		location.href = "/results/" + d.name;
+		           	})
 	            .append("text")
 		      .attr("dy", ".3em")
 		      .style("text-anchor", "middle");
-
 
 		 
 		 vis.enter().append('text')
 		 	.attr("x", function(d){ return d.x; })
 	        .attr("y", function(d){ return d.y + 5; })
 	        .attr("text-anchor", "middle")
-		 	.text(function(d) { return d.name })
-		 	.style({
-	            "color":"white", 
-	            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
-	            "font-size": "12px"
-	        });
+	        .attr("pointer-events", "none")
+		 	.style("color", "white")
+	        .text(function(d) { return d.name });
 
 	 	function keywordMouseover(d, i) {
+	 		//d3.select(this).select("text").style("font-weight", "bold");
 	 		d3.select(this).style("opacity", 0.5);
+	 		d3.select(this).attr("r", d.r + 5);
 	 		var word = d.name;
 	 		var keywordArticles = [];
 	 		for (prop in all_articles) {
