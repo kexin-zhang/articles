@@ -1,5 +1,6 @@
 #article-header, #display-arts p {
 	text-align: center;
+	cursor: pointer;
 }
 
 #display-arts p {
@@ -8,6 +9,7 @@
 
 #title {
 	color: #42a5f5;
+	cursor: pointer;
 }
 
 .chip a {
@@ -22,4 +24,9 @@ a.article-link:hover {
 
 .chip a:hover {
 	font-weight: bold;
+}
+
+.subtitle {
+	cursor: pointer;
+	padding-top: 1rem;
 }

@@ -5,13 +5,13 @@
 			<h3 class="header" id="title">"{{query}}"</h3>
 		</div>
 		<div class="col s8 center-align" style="margin-left: -5rem;">
-			<h5>Articles Published</h5>
+			<h5 class="subtitle">Articles Published</h5>
 			<div id = "chart"></div>
-			<h5>Keywords Used in Articles</h5>
+			<h5 class="subtitle">Keywords Used in Articles</h5>
 			<div id= "bubble-chart"></div>
 		</div>
 		<div class="col s4">
-			<h5 id="article-header">Articles</h5>
+			<h5 id="article-header" class="subtitle">Articles</h5>
 			<div id="display-arts">
 				<p>Hover over the graphs to find articles on "{{query}}."</p>
 			</div>
@@ -69,7 +69,7 @@
 
 		keyword_data = keyword_data.slice(0, 29);
 
-		var diameter = 900;
+		var diameter = 875;
 		var color = ["#81c784", "#7986cb", "#b39ddb", "#29b6f6", "#26c6da", "#26a69a", "#78909c"];
 
 	    var svg = d3.select('#bubble-chart').append('svg')
