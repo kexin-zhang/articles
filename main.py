@@ -46,9 +46,9 @@ def results(query):
 	all_articles = {}
 
 	for article in articles:
-		diff = article['_id'] - datetime(2016, 8, 26)
-		diff_current = datetime.now() - article['_id'] 
-		if diff.days > 0 and diff_current.days >= 0:
+		diff = article['_id'] - datetime(2016, 10, 20)
+		diff_current = datetime(2016, 10, 29) - article['_id'] 
+		if diff.days >= 0 and diff_current.days >= 0:
 			date = article['_id'].strftime("%Y-%m-%d")
 			try:
 				all_articles[date] = all_articles[date].extend(article['articles'])

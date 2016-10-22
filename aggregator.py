@@ -45,9 +45,12 @@ for source in sources:
 						'authors': authors, 
 						'url': url,
 					}
-				collection.update_one({'title': title, 'authors': authors},
-					{'$set': doc}, upsert=True)
-				print title
+				diff = doc['date'] - datetime(2016, 10, 22)
+				diff_current = datetime(2016, 10, 29) - doc['date']
+				if diff >= 0 and diff_current >= 0: 
+					collection.update_one({'title': title, 'authors': authors},
+						{'$set': doc}, upsert=True)
+					print title
 		except Exception, e: 
 			print str(e)
 
