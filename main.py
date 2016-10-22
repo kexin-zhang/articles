@@ -80,6 +80,17 @@ def results(query):
 	all_articles = json.dumps(all_articles)
 	return render_template('search.html', articles=all_articles, keywords=words_dict, lengths = articles_length, query=query)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    """Return a custom 404 error."""
+    return 'Sorry, Nothing at this URL.', 404
+
+
+@app.errorhandler(500)
+def application_error(e):
+    """Return a custom 500 error."""
+    return 'Sorry, unexpected error: {}'.format(e), 500
+
 # if __name__ == "__main__":
 #    app.run(debug=True)
 
