@@ -2,19 +2,19 @@ import newspaper
 from newspaper import Article
 import pymongo
 from pymongo import MongoClient
+from password import MONGO_USER, MONGO_PASS
 
-connection = MongoClient()
+connection = MongoClient("ds063536.mlab.com", port=63536)
 db = connection['articles']
-collection = db['article_data']
+db.authenticate(MONGO_USER, MONGO_PASS)
+collection = db['all_articles']
 
 sources = [
 	"http://www.cnn.com/",
 	"http://www.nytimes.com/",
 	"http://www.huffingtonpost.com/",
 	"https://www.theguardian.com/",
-	"https://www.news.yahoo.com/",
 	"http://www.foxnews.com/",
-	"http://www.forbes.com/",
 	"http://www.bbc.com/news",
 ]
 
@@ -37,7 +37,6 @@ for source in sources:
 						'title': title,
 						'keywords': keywords,
 						'authors': authors, 
-						'text': text,
 						'url': url,
 					}
 				collection.update_one({'title': title, 'authors': authors},

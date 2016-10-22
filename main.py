@@ -3,12 +3,14 @@ import pymongo
 from pymongo import MongoClient
 from datetime import datetime
 import json
+from password import MONGO_USER, MONGO_PASS
 
 app = Flask(__name__)
 
 @app.route('/')
 def main():
 	return render_template('index.html')
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -20,8 +22,9 @@ def search():
 
 @app.route('/results/<query>')
 def results(query):
-	connection = MongoClient()
+	connection = MongoClient("ds063536.mlab.com", port=63536)
 	db = connection['articles']
+	db.authenticate(MONGO_USER, MONGO_PASS)
 	collection = db['article_data']
 
 	or_pipeline = []
@@ -77,5 +80,6 @@ def results(query):
 	all_articles = json.dumps(all_articles)
 	return render_template('search.html', articles=all_articles, keywords=words_dict, lengths = articles_length, query=query)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#    app.run(debug=True)
+
