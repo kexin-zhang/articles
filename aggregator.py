@@ -16,6 +16,12 @@ sources = [
 	"https://www.theguardian.com/",
 	"http://www.foxnews.com/",
 	"http://www.bbc.com/news",
+	"https://www.yahoo.com/news/",
+	"http://www.usatoday.com/",
+	"https://www.theatlantic.com/",
+	"https://www.washingtonpost.com/",
+	"http://www.wsj.com/",
+	"http://www.reuters.com/",
 ]
 
 for source in sources: 

@@ -25,7 +25,7 @@ def results(query):
 	connection = MongoClient("ds063536.mlab.com", port=63536)
 	db = connection['articles']
 	db.authenticate(MONGO_USER, MONGO_PASS)
-	collection = db['article_data']
+	collection = db['all_articles']
 
 	or_pipeline = []
 	for part in query.split():
