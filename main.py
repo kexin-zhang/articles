@@ -9,7 +9,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-	return render_template('index.html')
+	connection = MongoClient("ds063536.mlab.com", port=63536)
+	db = connection['articles']
+	db.authenticate(MONGO_USER, MONGO_PASS)
+	collection = db['all_articles']
+	count = collection.find({}).count()
+	return render_template('index.html', count = count)
 
 
 @app.route('/search', methods=['POST'])
@@ -46,7 +51,7 @@ def results(query):
 	all_articles = {}
 
 	for article in articles:
-		diff = article['_id'] - datetime(2016, 10, 20)
+		diff = article['_id'] - datetime(2016, 10, 15)
 		diff_current = datetime(2016, 10, 29) - article['_id'] 
 		if diff.days >= 0 and diff_current.days >= 0:
 			date = article['_id'].strftime("%Y-%m-%d")
@@ -63,7 +68,7 @@ def results(query):
 			articles_length[curr] = 0
 
 	pipeline2 = [
-		{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 8, 26)}}},
+		{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 15)}}},
 		{'$unwind': '$keywords'},
 		{'$group': {'_id': None, 'words': {'$push': {'word': '$keywords'}}}}
 	]

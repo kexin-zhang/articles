@@ -1,31 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>INSERT TITLE</title>
+		<title>A Week In the News</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='metrics-graphics-2.10.1/dist/metricsgraphics.css') }}">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
 	</head>
-	<body>
-		<nav>
-    		<div class="nav-wrapper blue lighten-1">
-				<form action="{{ url_for('search') }}" method="post">
-					<div class="input-field">
-						<input id="query" type="search" name="query" required>
-				        <label for="query"><i class="material-icons">search</i></label>
-				        <i class="material-icons">close</i>
-			        </div>
-				</form>
-			</div>
-		</nav>
-		<div>
-			<div class="row">
-				{% block content %} 
-				{% endblock %}
-			</div>
-		</div>
-	</body>
+	{% block content %} 
+	{% endblock %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 </html>

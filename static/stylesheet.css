@@ -30,3 +30,29 @@ a.article-link:hover {
 	cursor: pointer;
 	padding-top: 1rem;
 }
+
+#header, #subheader, .card-title {
+	font-family: 'Slabo 27px', serif;
+}
+
+#header {
+	font-size: 6em;
+}
+
+#stats span {
+	color: #3f51b5;
+	font-weight: bold;
+}
+
+#searchIcon {
+	margin-top: 1rem;
+}
+
+#search-card .card-content {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#search-card .input-field {
+	margin-top: 0;
+}

@@ -1,27 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-	{% if lengths|length > 0 or keywords|length > 0 %}
-		<div class="col s12 center-align">
-			<h3 class="header" id="title">"{{query}}"</h3>
+	<body>
+	<nav>
+		<div class="nav-wrapper blue lighten-1">
+			<form action="{{ url_for('search') }}" method="post">
+				<div class="input-field">
+					<input id="query" type="search" name="query" required>
+			        <label for="query"><i class="material-icons">search</i></label>
+			        <i class="material-icons">close</i>
+		        </div>
+			</form>
 		</div>
-		<div class="col s8 center-align" style="margin-left: -5rem;">
-			<h5 class="subtitle">Articles Published</h5>
-			<div id = "chart"></div>
-			<h5 class="subtitle">Keywords Used in Articles</h5>
-			<div id= "bubble-chart"></div>
-		</div>
-		<div class="col s4">
-			<h5 id="article-header" class="subtitle">Articles</h5>
-			<div id="display-arts">
-				<p>Hover over the graphs to find articles on "{{query}}."</p>
+	</nav>
+	<div>
+		<div class="row">
+		{% if lengths|length > 0 or keywords|length > 0 %}
+			<div class="col s12 center-align">
+				<h3 class="header" id="title">"{{query}}"</h3>
 			</div>
+			<div class="col s8 center-align" style="margin-left: -5rem;">
+				<h5 class="subtitle">Articles Published</h5>
+				<div id = "chart"></div>
+				<h5 class="subtitle">Keywords Used in Articles</h5>
+				<div id= "bubble-chart"></div>
+			</div>
+			<div class="col s4">
+				<h5 id="article-header" class="subtitle">Articles</h5>
+				<div id="display-arts">
+					<p>Hover over the graphs to find articles on "{{query}}."</p>
+				</div>
+			</div>
+		{% else %}
+			<div class="col s12">
+				<h3>Sorry...</h3>
+				<p>We couldn't find anything matching your query. Try a different search, such as 'America', 'Trump', or 'Hillary'.</p>
+			</div>
+		{% endif %}
 		</div>
-	{% else %}
-		<div class="col s12">
-			<h3>Sorry...</h3>
-			<p>We couldn't find anything matching your query. Try a different search, such as 'America', 'Trump', or 'Hillary'.</p>
-		</div>
-	{% endif %}
+	</div>
+</body>
 
 	<script  src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
 	<script src="https://d3js.org/d3.v3.min.js"></script>

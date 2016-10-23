@@ -3,6 +3,7 @@ from newspaper import Article
 import pymongo
 from pymongo import MongoClient
 from password import MONGO_USER, MONGO_PASS
+from datetime import datetime
 
 connection = MongoClient("ds063536.mlab.com", port=63536)
 db = connection['articles']
@@ -31,6 +32,9 @@ for source in sources:
 		article.parse()
 		try:
 			article.nlp()
+		except Exception, e: 
+			print str(e)
+		else:
 			url = article.url
 			authors = article.authors
 			date = article.publish_date
@@ -45,14 +49,19 @@ for source in sources:
 						'authors': authors, 
 						'url': url,
 					}
-				diff = doc['date'] - datetime(2016, 10, 22)
-				diff_current = datetime(2016, 10, 29) - doc['date']
-				if diff >= 0 and diff_current >= 0: 
-					collection.update_one({'title': title, 'authors': authors},
-						{'$set': doc}, upsert=True)
-					print title
-		except Exception, e: 
-			print str(e)
+				if doc['date'] != None:
+					try:
+						diff = doc['date'] - datetime(2016, 10, 22)
+						diff_current = datetime(2016, 10, 29) - doc['date']
+						if diff.days >= 0 and diff_current.days >= 0: 
+							collection.update_one({'title': title, 'authors': authors},
+								{'$set': doc}, upsert=True)
+							print title
+					except:
+						collection.update_one({'title': title, 'authors': authors},
+							{'$set': doc}, upsert=True)
+						print title
+		
 
 
 
