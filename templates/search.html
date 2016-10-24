@@ -2,7 +2,7 @@
 {% block content %}
 	<body>
 	<nav>
-		<div class="nav-wrapper blue lighten-1">
+		<div class="nav-wrapper indigo lighten-1">
 			<form action="{{ url_for('search') }}" method="post">
 				<div class="input-field">
 					<input id="query" type="search" name="query" required>
@@ -12,26 +12,38 @@
 			</form>
 		</div>
 	</nav>
-	<div>
+	<div id="graphs-container">
 		<div class="row">
 		{% if lengths|length > 0 or keywords|length > 0 %}
 			<div class="col s12 center-align">
 				<h3 class="header" id="title">"{{query}}"</h3>
 			</div>
-			<div class="col s8 center-align" style="margin-left: -5rem;">
-				<h5 class="subtitle">Articles Published</h5>
-				<div id = "chart"></div>
-				<h5 class="subtitle">Keywords Used in Articles</h5>
-				<div id= "bubble-chart"></div>
+			<div class="col s12 m8 center-align">
+				<div class="card white">
+					<div class="card-content">
+						<span class="card-title subtitle">Articles Published</span>
+						<div id = "chart"></div>
+					</div>
+				</div>
+				<div class="card white">
+					<div class="card-content">
+						<span class="card-title subtitle">Keywords Used in Articles</span>
+						<div id= "bubble-chart"></div>
+					</div>
+				</div>
 			</div>
-			<div class="col s4">
-				<h5 id="article-header" class="subtitle">Articles</h5>
-				<div id="display-arts">
-					<p>Hover over the graphs to find articles on "{{query}}."</p>
+			<div class="col s12 m4">
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title" id="article-header" class="subtitle">Articles</span>
+						<div id="display-arts">
+							<p>Hover over the graphs to find articles on "{{query}}."</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		{% else %}
-			<div class="col s12">
+			<div class="col s12 center">
 				<h3>Sorry...</h3>
 				<p>We couldn't find anything matching your query. Try a different search, such as 'America', 'Trump', or 'Hillary'.</p>
 			</div>
@@ -159,7 +171,7 @@
 	    function displayArticles(arts, date) {
 	    	var htmlStr = '';
 	    	if (arts != null) {
-	    		$('#article-header').html('<h5>Articles published on <span style="color:#42a5f5;">' + date + '</span></h5>');
+	    		$('#article-header').html('<h5>Articles published on <span style="color:#5c6bc0;">' + date + '</span></h5>');
 		    	for (var i=0; i < arts.length; i ++) {
 		    		var thisArt = arts[i];
 		    		htmlStr += '<div class="section">';

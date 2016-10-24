@@ -32,6 +32,7 @@ def results(query):
 	db.authenticate(MONGO_USER, MONGO_PASS)
 	collection = db['all_articles']
 
+	query = query.strip()
 	or_pipeline = []
 	for part in query.split():
 		or_pipeline.append({'keywords': part})
