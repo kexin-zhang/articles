@@ -40,7 +40,7 @@ def results(query):
 	print or_pipeline
 
 	pipeline = [
-		{'$match': {'$or': or_pipeline, 'date': {'$ne': None}} },
+		{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 22)}} },
 		{'$group': {'_id': '$date','articles': {'$push': {'title': '$title', 'url': '$url', 'author': '$authors', 'keywords': '$keywords'} }}},
 		{'$sort': {'_id': 1}}
 	]
@@ -52,16 +52,13 @@ def results(query):
 	all_articles = {}
 
 	for article in articles:
-		diff = article['_id'] - datetime(2016, 10, 15)
-		diff_current = datetime(2016, 10, 29) - article['_id'] 
-		if diff.days >= 0 and diff_current.days >= 0:
-			date = article['_id'].strftime("%Y-%m-%d")
-			try:
-				all_articles[date] = all_articles[date].extend(article['articles'])
-				articles_length[date] = articles_length[date] + len(article['articles'])
-			except:
-				all_articles[date] = article['articles']
-				articles_length[date] = len(article['articles'])
+		date = article['_id'].strftime("%Y-%m-%d")
+		if date in all_articles:
+		 	all_articles[date].extend(article['articles'])
+			articles_length[date] = articles_length[date] + len(article['articles'])
+		else:
+			all_articles[date] = article['articles']
+			articles_length[date] = len(article['articles'])
 
 	if len(articles_length) > 0: 			
 		curr = datetime.now().strftime("%Y-%m-%d")
