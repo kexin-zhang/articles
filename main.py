@@ -14,6 +14,19 @@ def main():
 	db.authenticate(MONGO_USER, MONGO_PASS)
 	collection = db['all_articles']
 	count = collection.find({}).count()
+
+	pipeline = [
+		{'$match': {'date': {'$gte': datetime(2016, 10, 15)}}},
+		{'$unwind': '$keywords'},
+		{'$group': {'_id': '$keywords', 'count': {'$sum': 1 }}},
+		{'$sort': {'count': -1}},
+		{'$limit': 15}
+	]
+
+	words = collection.aggregate(pipeline)
+	words = [str(word["_id"]) for word in list(words) if len(word["_id"]) > 3]
+	print words
+
 	return render_template('index.html', count = count)
 
 
@@ -37,7 +50,7 @@ def results(query):
 	for part in query.split():
 		or_pipeline.append({'keywords': part})
 		or_pipeline.append({'title': {'$regex': part,  "$options": "-i"}})
-	print or_pipeline
+	#print or_pipeline
 
 	pipeline = [
 		{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 22)}} },
@@ -65,20 +78,33 @@ def results(query):
 		if curr not in articles_length:
 			articles_length[curr] = 0
 
+	# pipeline2 = [
+	# 	{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 15)}}},
+	# 	{'$unwind': '$keywords'},
+	# 	{'$group': {'_id': None, 'words': {'$push': {'word': '$keywords'}}}}
+	# ]
+
 	pipeline2 = [
 		{'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 15)}}},
 		{'$unwind': '$keywords'},
-		{'$group': {'_id': None, 'words': {'$push': {'word': '$keywords'}}}}
+		{'$group': {'_id': '$keywords', 'count': {'$sum': 1 }}},
+		{'$sort': {'count': -1}}
 	]
 
 	words = collection.aggregate(pipeline2)
-	try:
-		all_keywords = [item['word'] for item in list(words)[0]['words']]
-	except:
-		all_keywords = []
+
+	# try:
+	# 	all_keywords = [item['word'] for item in list(words)[0]['words']]
+	# except:
+	# 	all_keywords = []
 
 	ignore = ['10000', 'hello']
-	words_dict = {str(x):all_keywords.count(x) for x in all_keywords if query not in str(x) and len(str(x)) > 3 and str(x) not in ignore }
+	words_dict = {}
+	for keyword in words:
+		key = str(keyword["_id"])
+		if query not in key and len(key) > 3 and key not in ignore:
+			words_dict[key] = int(keyword["count"])
+	#words_dict = {str(x["_id"]):int(x["count"]) for x in all_keywords if query not in str(x["_id"]) and len(str(x["_id"])) > 3 and str(x["_id"]) not in ignore }
 
 	all_articles = json.dumps(all_articles)
 	return render_template('search.html', articles=all_articles, keywords=words_dict, lengths = articles_length, query=query)
