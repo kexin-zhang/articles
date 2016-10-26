@@ -97,6 +97,11 @@ def results(query):
 	all_articles = json.dumps(all_articles)
 	return render_template('search.html', articles=all_articles, keywords=words_dict, lengths = articles_length, query=query)
 
+@app.route('/counts', methods=['GET'])
+def count():
+	with open("counts.json") as f:
+		return f.read()
+
 @app.errorhandler(404)
 def page_not_found(e):
     """Return a custom 404 error."""

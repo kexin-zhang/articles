@@ -20,7 +20,7 @@ pipeline = [
 ]
 
 words = collection.aggregate(pipeline)
-words = [str(word["_id"]) for word in list(words) if len(word["_id"]) > 3]
+words = [str(word["_id"]) for word in list(words) if len(word["_id"]) > 3][:8]
 print words
 
 output = sum([map(list, combinations(words, i)) for i in range(len(words) + 1)], [])
