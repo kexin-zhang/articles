@@ -33,8 +33,8 @@ for wordList in output:
 
 		query = {'date': {'$gte': datetime(2016, 10, 15)}, 'keywords':{'$all': wordList}}
 		combCount = collection.find(query).count()
-
-		toSave.append({'sets': wordList, 'size': combCount})
+		if combCount > 0:
+			toSave.append({'sets': wordList, 'size': combCount})
 
 with open("counts.json", 'w') as out:
 	json.dump(toSave, out)
