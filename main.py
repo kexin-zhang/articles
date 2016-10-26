@@ -15,18 +15,6 @@ def main():
 	collection = db['all_articles']
 	count = collection.find({}).count()
 
-	pipeline = [
-		{'$match': {'date': {'$gte': datetime(2016, 10, 15)}}},
-		{'$unwind': '$keywords'},
-		{'$group': {'_id': '$keywords', 'count': {'$sum': 1 }}},
-		{'$sort': {'count': -1}},
-		{'$limit': 15}
-	]
-
-	words = collection.aggregate(pipeline)
-	words = [str(word["_id"]) for word in list(words) if len(word["_id"]) > 3]
-	print words
-
 	return render_template('index.html', count = count)
 
 
