@@ -3,6 +3,15 @@ $(document).ready(function() {
 
 		// draw venn diagram
 		var div = d3.select("#venn");
+				
+		// d3.select("#venn").append('div')
+  //               .classed("svg-container", true)
+  //               .append('svg')
+  //               .attr("preserveAspectRatio", "xMinYMin meet")
+  //               //NEED TO CHANGE VIEWBOX HERE IF YOU CHANGE DIMENSIONS
+  //               .attr("viewBox", "0 0 1000 ")
+  //               .classed("svg-content-responsive", true);
+
 		div.datum(sets).call(venn.VennDiagram());
 
 		//no captions
