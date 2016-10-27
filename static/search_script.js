@@ -7,8 +7,9 @@ for (var prop in all_articles) {
 
 MG.data_graphic({
     data: data,
-    width: 900,
+    full_width: true,
     height: 600,
+    width: 900,
     target: '#chart',
     x_accessor: 'date',
     y_accessor: 'value',
@@ -39,9 +40,14 @@ keyword_data = keyword_data.slice(0, 29);
 var diameter = 875;
 var color = ["#81c784", "#7986cb", "#b39ddb", "#29b6f6", "#26c6da", "#26a69a", "#78909c"];
 
-var svg = d3.select('#bubble-chart').append('svg')
-                .attr('width', diameter)
-                .attr('height', diameter);
+var svg = d3.select('#bubble-chart')
+                .append('div')
+                .classed("svg-container", true)
+                .append('svg')
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                //NEED TO CHANGE VIEWBOX HERE IF YOU CHANGE DIMENSIONS
+                .attr("viewBox", "0 0 875 875")
+                .classed("svg-content-responsive", true);
 
 var bubble = d3.layout.pack()
             .size([diameter, diameter])
