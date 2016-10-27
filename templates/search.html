@@ -33,17 +33,23 @@
 				</div>
 			</div>
 			<div class="col s12 m4">
+				<div id ="articles-card">
 				<div class="card">
-					<div class="card-content">
-						<span class="card-title" id="article-header" class="subtitle">Articles</span>
+					<div class="card-content" >
+						<span class="card-title subtitle" id="article-header">Articles</span>
 						<div id="display-arts">
 							<p>Hover over the graphs to find articles on "{{query}}."</p>
 						</div>
+						<div id="display-arts-pages" style="display:none;">
+							<span id="page-left"><i class="material-icons">chevron_left</i></span>
+							<span id="page-right"><i class="material-icons">chevron_right</i></span>
+						</div>
 					</div>
+				</div>
 				</div>
 			</div>
 		{% else %}
-			<div class="col s12 center">
+			<div class="col s12 center-align">
 				<h3>Sorry...</h3>
 				<p>We couldn't find anything matching your query. Try a different search, such as 'America', 'Trump', or 'Hillary'.</p>
 			</div>

@@ -102,8 +102,50 @@ a.article-link {
     left: 0;
 }
 
-@media only screen and (min-width: 480px) {
+@media only screen and (max-width: 480px) {
 	.col.s12 {
 		width: 100% !important;
 	}
+}
+
+#display-arts-pages {
+	width: 100%;
+	margin-bottom: 20px
+}
+
+#page-left {
+	float:left;
+	padding: 5px;
+	padding-top: 0;
+}
+
+#page-right {
+	float:right;
+	padding: 5px;
+	padding-top: 0;
+}
+
+#page-right i, #page-left i {
+	font-size: 2em;
+}
+
+.divider:last-of-type {
+	height: 0px;
+}
+
+.pin-top {
+	position: relative;
+}
+
+.pin-bottom {
+	position: relative;
+}
+
+.pinned {
+	position: fixed !important;
+}
+
+#articles-card.pinned {
+	margin-right: 5%;
+	padding-right:.75rem;
 }

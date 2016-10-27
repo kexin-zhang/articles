@@ -8,7 +8,7 @@ for (var prop in all_articles) {
 MG.data_graphic({
     data: data,
     full_width: true,
-    height: 600,
+    height: 500,
     width: 900,
     target: '#chart',
     x_accessor: 'date',
@@ -113,10 +113,12 @@ var bubble = d3.layout.pack()
 	} 
 
 function displayArticles(arts, date) {
+    $('#display-arts').html('');
+    $('#display-arts-pages').hide();
 	var htmlStr = '';
 	if (arts != null) {
 		$('#article-header').html('<h5>Articles published on <span style="color:#5c6bc0;">' + date + '</span></h5>');
-    	for (var i=0; i < arts.length; i ++) {
+    	for (var i=0; i < Math.min(arts.length, 10); i ++) {
     		var thisArt = arts[i];
     		htmlStr += '<div class="section">';
     		htmlStr += '<h6><a class="article-link" target="_blank" href="' + thisArt.url + '">' + thisArt.title + '</a></h6>';
@@ -129,9 +131,11 @@ function displayArticles(arts, date) {
     		htmlStr += '</div>';
     		htmlStr += '<div class="divider"></div>';
     	}
-    	$('#display-arts').html('');
     	$('#display-arts').html(htmlStr);
-	}
+	    if(arts.length > 10) {
+            $('#display-arts-pages').show();
+        }
+    }
 }
 
 format = function date2str(x, y) {
@@ -149,4 +153,8 @@ format = function date2str(x, y) {
     return y.replace(/(y+)/g, function(v) {
         return x.getFullYear().toString().slice(-v.length)
     });
-} 
+}
+
+$(document).ready(function() {
+    $('#articles-card').pushpin({ top: $('#articles-card').offset().top });
+}) 
