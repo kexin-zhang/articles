@@ -117,7 +117,7 @@ function displayArticles(arts, date) {
 	var htmlStr = '';
 	if (arts != null) {
 		$('#article-header').html('<h5>Articles published on <span style="color:#5c6bc0;">' + date + '</span></h5>');
-    	for (var i=0; i < Math.min(arts.length, 10); i ++) {
+    	for (var i=0; i < arts.length; i ++) {
     		var thisArt = arts[i];
     		htmlStr += '<div class="section">';
     		htmlStr += '<h6><a class="article-link" target="_blank" href="' + thisArt.url + '">' + thisArt.title + '</a></h6>';

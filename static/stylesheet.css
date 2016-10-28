@@ -129,6 +129,11 @@ a.article-link {
 	padding-right:.75rem;
 }
 
+#articles-card.pin-top .card-content {
+	max-height: 87vh;
+	overflow-y: auto;
+}
+
 #articles-card.pinned .card-content {
 	max-height: calc(100vh - 43px);
 	overflow-y: auto;
