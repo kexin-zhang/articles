@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 		        // Display a tooltip with the current size
 		        tooltip.transition().duration(400).style("opacity", .9);
-		        tooltip.text(d.sets + ': ' + d.size );
+		        tooltip.text(d.sets + ': ' + d.size + ' articles');
 
 		        // highlight the current path
 		        var selection = d3.select(this).transition("tooltip").duration(400);
