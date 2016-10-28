@@ -114,7 +114,6 @@ var bubble = d3.layout.pack()
 
 function displayArticles(arts, date) {
     $('#display-arts').html('');
-    $('#display-arts-pages').hide();
 	var htmlStr = '';
 	if (arts != null) {
 		$('#article-header').html('<h5>Articles published on <span style="color:#5c6bc0;">' + date + '</span></h5>');
@@ -132,9 +131,6 @@ function displayArticles(arts, date) {
     		htmlStr += '<div class="divider"></div>';
     	}
     	$('#display-arts').html(htmlStr);
-	    if(arts.length > 10) {
-            $('#display-arts-pages').show();
-        }
     }
 }
 
