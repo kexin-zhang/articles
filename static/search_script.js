@@ -39,7 +39,7 @@ keyword_data.sort(function(a, b) {
 keyword_data = keyword_data.slice(0, 29);
 
 var diameter = 875;
-var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
+var color = ["#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#5e4fa2"];
 
 var svg = d3.select('#bubble-chart')
                 .append('div')
@@ -67,8 +67,8 @@ var bubble = d3.layout.pack()
                 .data(nodes);
   
   vis.enter().append('circle')
-  			.style("fill", function(d, i) { return color[i % color.length]; })
-            .style("opacity", .25)
+  			.style("fill", function(d, i) { return color[i%color.length]; })
+            //.style("opacity", .25)
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
             .attr('r', function(d) { return d.r; })
             .on("mouseenter", keywordMouseover)

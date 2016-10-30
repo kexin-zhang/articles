@@ -56,8 +56,8 @@ for source in sources:
 						if diff.days >= 0 and diff_current.days >= 0:
 							collection.update_one({'title': title, 'authors': authors},
 								{'$set': doc}, upsert=True)
-							print(title.encode('utf-8'))
+							print title
 					except:
 						collection.update_one({'title': title, 'authors': authors},
 							{'$set': doc}, upsert=True)
-						print(title.encode('utf-8'))
+						print title

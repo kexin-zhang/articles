@@ -73,7 +73,7 @@ def results(query):
     #print or_pipeline
 
     pipeline = [
-        {'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 22)}} },
+        {'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 22), '$lte': datetime(2016, 10, 30)}} },
         {'$group': {'_id': '$date','articles': {'$push': {'title': '$title', 'url': '$url', 'author': '$authors', 'keywords': '$keywords'} }}},
         {'$sort': {'_id': 1}}
     ]
@@ -105,10 +105,11 @@ def results(query):
     # ]
 
     pipeline2 = [
-        {'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 15)}}},
+        {'$match': {'$or': or_pipeline, 'date': {'$gte': datetime(2016, 10, 22), '$lte': datetime(2016, 10, 30)}}},
         {'$unwind': '$keywords'},
         {'$group': {'_id': '$keywords', 'count': {'$sum': 1 }}},
-        {'$sort': {'count': -1}}
+        {'$sort': {'count': -1}},
+        {'$limit': 50}
     ]
 
     words = collection.aggregate(pipeline2)
@@ -118,12 +119,15 @@ def results(query):
     # except:
     #   all_keywords = []
 
-    ignore = ['10000', 'hello']
+    ignore = ['10000', 'hello', 'reutersipsos']
     words_dict = {}
     for keyword in words:
-        key = str(keyword["_id"])
-        if query not in key and len(key) > 3 and key not in ignore:
-            words_dict[key] = int(keyword["count"])
+        try:
+            key = str(keyword["_id"])
+            if query not in key and len(key) > 3 and key not in ignore:
+                words_dict[key] = int(keyword["count"])
+        except UnicodeEncodeError:
+            pass
     #words_dict = {str(x["_id"]):int(x["count"]) for x in all_keywords if query not in str(x["_id"]) and len(str(x["_id"])) > 3 and str(x["_id"]) not in ignore }
 
     all_articles = json.dumps(all_articles)
@@ -145,6 +149,6 @@ def application_error(e):
     """Return a custom 500 error."""
     return 'Sorry, unexpected error: {}'.format(e), 500
 
-if __name__ == "__main__":
-   app.run(debug=True)
+# if __name__ == "__main__":
+#    app.run(debug=True)
 
