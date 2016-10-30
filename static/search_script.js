@@ -39,7 +39,11 @@ keyword_data.sort(function(a, b) {
 keyword_data = keyword_data.slice(0, 29);
 
 var diameter = 875;
-var color = ["#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#5e4fa2"];
+var color = ["#d53e4f",
+"#3f51b5",
+"#abdda4",
+"#66c2a5",
+"#3288bd"];
 
 var svg = d3.select('#bubble-chart')
                 .append('div')
@@ -67,13 +71,13 @@ var bubble = d3.layout.pack()
                 .data(nodes);
   
   vis.enter().append('circle')
-  			.style("fill", function(d, i) { return color[i%color.length]; })
-            //.style("opacity", .25)
+  			.style("fill", function(d, i) { return color[Math.floor(Math.random() * color.length)]; })
+            .style("opacity", .7)
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
             .attr('r', function(d) { return d.r; })
             .on("mouseenter", keywordMouseover)
             .on("mouseleave", function(d) {
-            		d3.select(this).style("opacity", 1); 
+            		d3.select(this).style("opacity", .7); 
             		d3.select(this).attr("r", d.r-5); 
             	})
            	.on("click", function(d) {
@@ -94,7 +98,7 @@ var bubble = d3.layout.pack()
 
 	function keywordMouseover(d, i) {
 		//d3.select(this).select("text").style("font-weight", "bold");
-		d3.select(this).style("opacity", 0.5);
+		d3.select(this).style("opacity", 1);
 		d3.select(this).attr("r", d.r + 5);
 		var word = d.name;
 		var keywordArticles = [];
