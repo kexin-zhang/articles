@@ -11,6 +11,7 @@ MG.data_graphic({
     height: 500,
     width: 900,
     target: '#chart',
+    top: 15,
     x_accessor: 'date',
     y_accessor: 'value',
     color: '#82b1ff',
