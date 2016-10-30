@@ -14,7 +14,7 @@ MG.data_graphic({
     top: 15,
     x_accessor: 'date',
     y_accessor: 'value',
-    color: '#82b1ff',
+    color: "#1f77b4",
     mouseover: function(d, i) {
     // custom format the rollover text, show days
     d3.select('#custom-rollover svg .mg-active-datapoint')
@@ -39,7 +39,7 @@ keyword_data.sort(function(a, b) {
 keyword_data = keyword_data.slice(0, 29);
 
 var diameter = 875;
-var color = ["#81c784", "#7986cb", "#b39ddb", "#29b6f6", "#26c6da", "#26a69a", "#78909c"];
+var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
 
 var svg = d3.select('#bubble-chart')
                 .append('div')
@@ -68,6 +68,7 @@ var bubble = d3.layout.pack()
   
   vis.enter().append('circle')
   			.style("fill", function(d, i) { return color[i % color.length]; })
+            .style("opacity", .25)
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
             .attr('r', function(d) { return d.r; })
             .on("mouseenter", keywordMouseover)
