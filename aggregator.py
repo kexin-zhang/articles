@@ -25,15 +25,15 @@ sources = [
 	"http://www.reuters.com/",
 ]
 
-for source in sources: 
+for source in sources:
 	paper = newspaper.build(source, memoize_articles=False)
 	for article in paper.articles:
 		article.download()
-		article.parse()
 		try:
+			article.parse()
 			article.nlp()
-		except Exception, e: 
-			print str(e)
+		except Exception as e:
+			print(str(e))
 		else:
 			url = article.url
 			authors = article.authors
@@ -46,22 +46,18 @@ for source in sources:
 						'date': date,
 						'title': title,
 						'keywords': keywords,
-						'authors': authors, 
+						'authors': authors,
 						'url': url,
 					}
 				if doc['date'] != None:
 					try:
 						diff = doc['date'] - datetime(2016, 10, 22)
 						diff_current = datetime(2016, 10, 29) - doc['date']
-						if diff.days >= 0 and diff_current.days >= 0: 
+						if diff.days >= 0 and diff_current.days >= 0:
 							collection.update_one({'title': title, 'authors': authors},
 								{'$set': doc}, upsert=True)
-							print title
+							print(title.encode('utf-8'))
 					except:
 						collection.update_one({'title': title, 'authors': authors},
 							{'$set': doc}, upsert=True)
-						print title
-		
-
-
-
+						print(title.encode('utf-8'))

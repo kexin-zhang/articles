@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col s12 center">
 				<h1 id="header">A Week in the News</h1>
-				<h3 id="subheader" class="indigo-text">Oct 22, 2016 - Oct 29, 2016</h3>
+				<h4 id="subheader" class="indigo-text">Oct 22, 2016 - Oct 29, 2016</h4>
 				<h5 id="stats"><span>7</span> days | <span>12</span> sources | <span>{{count}}</span> articles</h5>
 			</div>
 		</div>
@@ -29,6 +29,13 @@
 					<div class="card-content">
 						<span class="card-title">Popular Keywords</span>
 						<div id="venn"></div>
+					</div>
+				</div>
+				<div class="card white">
+					<div class="card-content">
+						<span class="card-title">Keyword Trends</span>
+						<div id="trends"></div>
+						<div class="legend"></div>
 					</div>
 				</div>
 			</div>
@@ -73,5 +80,8 @@
 		</div>
 	</div>
 </body>
+<script>
+	var trends = {{trends | safe}};
+</script>
 <script src="{{ url_for('static', filename='index_script.js') }}"></script>
 {% endblock %}

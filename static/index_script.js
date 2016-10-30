@@ -1,3 +1,21 @@
+for (var i = 0; i < trends.length; i++) {
+    trends[i] = MG.convert.date(trends[i], 'date');
+}
+
+console.log('hi');
+
+MG.data_graphic({
+    title: "Multi-Line Chart",
+    data: trends,
+    full_width: true,
+    width: 600,
+    height: 300,
+    target: '#trends',
+    legend: ['trump', 'clinton', 'state', 'york', 'states', 'united', 'world', '2016'],
+    legend_target: '.legend',
+    colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"],
+});
+
 $(document).ready(function() {
 	$.getJSON('/counts', function(sets) {
 
