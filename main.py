@@ -109,7 +109,7 @@ def results(query):
         {'$unwind': '$keywords'},
         {'$group': {'_id': '$keywords', 'count': {'$sum': 1 }}},
         {'$sort': {'count': -1}},
-        {'$limit': 50}
+        {'$limit': 55}
     ]
 
     words = collection.aggregate(pipeline2)

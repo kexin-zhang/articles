@@ -2,8 +2,6 @@ for (var i = 0; i < trends.length; i++) {
     trends[i] = MG.convert.date(trends[i], 'date');
 }
 
-console.log('hi');
-
 MG.data_graphic({
     data: trends,
     full_width: true,
@@ -17,6 +15,8 @@ MG.data_graphic({
 });
 
 $(document).ready(function() {
+	createLegend();
+
 	$.getJSON('/counts', function(sets) {
 
 		// draw venn diagram
@@ -70,6 +70,18 @@ $(document).ready(function() {
 		            .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
 		            .style("stroke-opacity", 0);
 		    });
-	})
+	});
+
 })
+
+function createLegend() {
+	var cats = ['trump', 'clinton', 'york', 'world', 'states', 'state', '2016', 'united'];
+	var colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"];
+	var htmlStr = ''
+	for (var i = 0; i < cats.length; i ++) {
+		htmlStr = htmlStr + '<li><span style="background-color:' + colors[i] + ';"></span>' + cats[i] + "</li>";
+		console.log(htmlStr);
+	}
+	$('#venn-legend').html(htmlStr);
+}
 

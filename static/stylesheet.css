@@ -151,4 +151,19 @@ a.article-link {
 	text-align: center;
 }
 
+#venn-legend { 
+	list-style: none; 
+}
 
+#venn-legend span {
+	float: left; 
+	width: 12px; 
+	height: 12px; 
+	margin: 4px 5px 2px 2px; 
+	border-radius:50%;
+}
+
+#venn svg {
+	display: block;
+	margin: auto;
+}
