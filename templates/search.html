@@ -60,6 +60,8 @@
 	var keywords = {{ keywords | safe }};
 	var query = "{{query}}";
 </script>
+<script src="{{ url_for('static', filename='compressed.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>	
 <script src="{{ url_for('static', filename='search_script.js') }}"></script>
 
 {% endblock %}

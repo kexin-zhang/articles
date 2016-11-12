@@ -13,7 +13,7 @@ def main():
     db = connection['articles']
     db.authenticate(MONGO_USER, MONGO_PASS)
     collection = db['all_articles']
-    count = collection.find({}).count()
+    #count = collection.find({'date': {'$gte': datetime(2016, 10, 22), '$lte': datetime(2016, 10, 30)}}).count()
 
     search = ['trump', 'clinton', 'state', 'york', 'states', 'united', 'world', '2016']
     or_pipeline = []
@@ -47,7 +47,7 @@ def main():
         index = search.index(item)
         trends[index].extend([{'date': k, 'value': x[item][k]} for k in x[item]])
 
-    return render_template('index.html', count = count, trends=json.dumps(trends))
+    return render_template('index.html', trends=json.dumps(trends))
 
 
 @app.route('/search', methods=['POST'])

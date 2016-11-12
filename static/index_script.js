@@ -75,12 +75,12 @@ $(document).ready(function() {
 })
 
 function createLegend() {
-	var cats = ['trump', 'clinton', 'york', 'world', 'states', 'state', '2016', 'united'];
+	var cats = ['trump', 'clinton', 'world', 'york', 'state', '2016', 'told', 'states'];
 	var colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"];
 	var htmlStr = ''
 	for (var i = 0; i < cats.length; i ++) {
 		htmlStr = htmlStr + '<li><span style="background-color:' + colors[i] + ';"></span>' + cats[i] + "</li>";
-		console.log(htmlStr);
+		//console.log(htmlStr);
 	}
 	$('#venn-legend').html(htmlStr);
 }
